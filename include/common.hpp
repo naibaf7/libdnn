@@ -1,6 +1,10 @@
 #ifndef GREENTEA_COMMON_HPP_
 #define GREENTEA_COMMON_HPP_
 
+#include <iostream>
+#include <type_traits>
+#include <sstream>
+#include <iomanip>
 #include "version.hpp"
 
 #ifndef GREENTEA_QUEUE_COUNT
@@ -27,6 +31,7 @@ namespace greentea {
 
 
 enum Backend {
+  BACKEND_CPU,
   BACKEND_CUDA,
   BACKEND_OpenCL
 };

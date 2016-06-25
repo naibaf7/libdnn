@@ -20,7 +20,7 @@
 #include "nvrtc.h"
 #endif  // USE_CUDA
 
-namespace libdnn {
+namespace greentea {
 
 typedef enum {
   // Stack the batch update into one GEMM block

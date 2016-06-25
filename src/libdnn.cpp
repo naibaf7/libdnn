@@ -6,7 +6,7 @@
 #include "benchmark.hpp"
 
 
-namespace caffe {
+namespace greentea {
 
 template<typename Dtype>
 LibDNNConv<Dtype>::LibDNNConv(LibDNNConfig config) {
@@ -1923,7 +1923,7 @@ void LibDNNConv<Dtype>::Tune(Dtype* top_data, Dtype* top_diff,
   });
   fw_tuner_->set_benchmark_routine([&]() -> double {
     try {
-      Timer timer;
+      Timer timer(dev_ptr_);
       timer.Start();
       self->Forward(bottom_data, weight, bias, top_data, batch_size);
       timer.Stop();
@@ -1947,7 +1947,7 @@ void LibDNNConv<Dtype>::Tune(Dtype* top_data, Dtype* top_diff,
   });
   bw_tuner_->set_benchmark_routine([&]() -> double {
     try {
-      Timer timer;
+      Timer timer(dev_ptr_);
       timer.Start();
       self->Backward(true, false,
                      top_data, top_diff,
@@ -1976,7 +1976,7 @@ void LibDNNConv<Dtype>::Tune(Dtype* top_data, Dtype* top_diff,
   });
   wg_tuner_->set_benchmark_routine([&]() -> double {
     try {
-      Timer timer;
+      Timer timer(dev_ptr_);
       timer.Start();
       self->Backward(false, true,
                      top_data, top_diff,
@@ -2033,9 +2033,7 @@ void LibDNNConv<Dtype>::SetMemory(Dtype* memory, int_tp count,
   }
 }
 
+template class LibDNNConv<float>;
+template class LibDNNConv<double>;
 
-INSTANTIATE_CLASS(LibDNNConv);
-
-}  // namespace caffe
-
-#endif  // USE_LIBDNN
+}  // namespace greentea

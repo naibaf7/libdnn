@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "common.hpp"
 
 using std::vector;
 

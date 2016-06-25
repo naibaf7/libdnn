@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 
-#include "caffe/device.hpp"
+#include "device.hpp"
 
 
-namespace caffe {
+namespace greentea {
 
 #ifdef USE_OPENCL
 void device::setupViennaCLContext(int id, const &cl_context ctx, const &cl_device dev, const &cl_command_queue queue) {
@@ -167,7 +167,7 @@ bool device::CheckCapability(std::string cap) {
 }
 
 bool device::CheckVendor(std::string vendor) {
-  if (backend_ == BACKEND_CUDA) {
+  if (backend_ == Backend::BACKEND_CUDA) {
     if (vendor.compare("NVIDIA") == 0)
       return true;
   }
@@ -184,6 +184,7 @@ bool device::CheckVendor(std::string vendor) {
   return false;
 }
 
+#ifdef USE_OPENCL
 bool device::is_host_unified() {
   return host_unified_;
 }

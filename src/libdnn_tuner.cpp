@@ -8,7 +8,7 @@
 #include "libdnn_tuner.hpp"
 
 
-namespace libdnn {
+namespace greentea {
 
 void LibDNNTuner::set_setup_routine(std::function<bool()> fun) {
   this->setup_routine_ = fun;
@@ -207,7 +207,7 @@ template void LibDNNTuner::add_range_param(const char* name, int64_t def_value,
 template<class T>
 void LibDNNTuner::add_set_param(std::string name,
                                 T def_value, std::vector<T> values) {
-  if (is_same<T, float>::value || is_same<T, double>::value) {
+  if (std::is_same<T, float>::value || std::is_same<T, double>::value) {
     std::vector<double> set_values;
     int_tp def_idx = -1;
     for (int_tp i = 0; i < values.size(); ++i) {
@@ -227,7 +227,7 @@ void LibDNNTuner::add_set_param(std::string name,
                       std::shared_ptr<LibDNNTunerParam>>(name, param));
   }
 
-  if (is_same<T, bool>::value) {
+  if (std::is_same<T, bool>::value) {
     std::vector<bool> set_values;
     int_tp def_idx = -1;
     for (int_tp i = 0; i < values.size(); ++i) {
@@ -247,7 +247,7 @@ void LibDNNTuner::add_set_param(std::string name,
                       std::shared_ptr<LibDNNTunerParam>>(name, param));
   }
 
-  if (is_same<T, int32_t>::value || is_same<T, int64_t>::value) {
+  if (std::is_same<T, int32_t>::value || std::is_same<T, int64_t>::value) {
     std::vector<int64_t> set_values;
     int_tp def_idx = -1;
     for (int_tp i = 0; i < values.size(); ++i) {
