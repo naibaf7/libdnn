@@ -1,27 +1,26 @@
-#ifndef CAFFE_GREENTEA_LIBDNN_HPP_
-#define CAFFE_GREENTEA_LIBDNN_HPP_
+#ifndef GREENTEA_LIBDNN_HPP_
+#define GREENTEA_LIBDNN_HPP_
 
 #include <memory>
 #include <string>
 #include <vector>
-#include "caffe/device.hpp"
-#include "caffe/greentea/libdnn_tuner.hpp"
+#include "device.hpp"
+#include "libdnn_tuner.hpp"
 
-#ifdef USE_GREENTEA
-#include "caffe/greentea/greentea.hpp"
+#ifdef USE_OPENCL
 #include "viennacl/backend/opencl.hpp"
 #include "viennacl/ocl/backend.hpp"
 #include "viennacl/ocl/context.hpp"
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
 #include "cuda.h"
 #include "nvrtc.h"
 #endif  // USE_CUDA
 
-namespace caffe {
+namespace libdnn {
 
 typedef enum {
   // Stack the batch update into one GEMM block
@@ -118,9 +117,9 @@ class LibDNNConv {
   std::string generate_wg_kernels(std::string name);
   bool CompileKernels();
   void SetMemory(Dtype* memory, int_tp count, int_tp offset, Dtype value);
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   viennacl::ocl::program CompileKernelsOpenCL(viennacl::ocl::context *ctx);
-#endif  // USE_GREETEA
+#endif  // USE_OPENCL
 #ifdef USE_CUDA
   nvrtcProgram CompileKernelsCuda();
 #endif  // USE_CUDA
@@ -132,9 +131,9 @@ class LibDNNConv {
  private:
   device* dev_ptr_;
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   viennacl::ocl::program ocl_program_;
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   nvrtcProgram cuda_program_;
@@ -193,6 +192,6 @@ class LibDNNConv {
   libdnnConvolutionBackwardAlgo_t bwalgo_;
 };
 
-}  // namespace caffe
+}  // namespace libdnn
 
-#endif /* CAFFE_GREENTEA_LIBDNN_HPP_ */
+#endif  // LIBDNN_LIBDNN_HPP_

@@ -1,10 +1,9 @@
 #include <string>
 #include <vector>
-#include "caffe/common.hpp"
-#ifdef USE_LIBDNN
-#include "caffe/device.hpp"
-#include "caffe/greentea/libdnn.hpp"
-#include "caffe/util/benchmark.hpp"
+#include "common.hpp"
+#include "device.hpp"
+#include "libdnn.hpp"
+#include "benchmark.hpp"
 
 
 namespace caffe {
@@ -1590,7 +1589,7 @@ void LibDNNConv<Dtype>::GenerateKernels() {
 
 template<typename Dtype>
 bool LibDNNConv<Dtype>::CompileKernels() {
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
     CompileKernelsOpenCL(&(viennacl::ocl::get_context(dev_ptr_->id())));
   }
@@ -1603,7 +1602,7 @@ bool LibDNNConv<Dtype>::CompileKernels() {
   return true;
 }
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
 template<typename Dtype>
 viennacl::ocl::program LibDNNConv<Dtype>::CompileKernelsOpenCL(
     viennacl::ocl::context *ctx) {
@@ -1625,7 +1624,7 @@ viennacl::ocl::program LibDNNConv<Dtype>::CompileKernelsOpenCL(
   ocl_program_ = ctx->add_program(kernel_.c_str(), "kernel_program");
   return ocl_program_;
 }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
 template<typename Dtype>
@@ -1666,7 +1665,7 @@ void LibDNNConv<Dtype>::Forward(const Dtype* bottom_data,
   int fw_div_N = fw_wptn * fw_wgs0;
   int fw_div_M = fw_wptm * fw_wgs1;
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
     viennacl::ocl::kernel &kernel = ocl_program_.get_kernel("conv_forward");
     viennacl::ocl::context &ctx = viennacl::ocl::get_context(dev_ptr_->id());
@@ -1700,7 +1699,7 @@ void LibDNNConv<Dtype>::Forward(const Dtype* bottom_data,
           ctx.get_queue());
     }
   }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   if (dev_ptr_->backend() == BACKEND_CUDA) {
@@ -1760,7 +1759,7 @@ void LibDNNConv<Dtype>::Backward(bool prop_down_data, bool prop_down_weights,
   }
 
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
     // Backprop w.r.t. data
     if (prop_down_data) {
@@ -1840,7 +1839,7 @@ void LibDNNConv<Dtype>::Backward(bool prop_down_data, bool prop_down_weights,
       }
     }
   }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   if (dev_ptr_->backend() == BACKEND_CUDA) {
@@ -2000,7 +1999,7 @@ template<typename Dtype>
 void LibDNNConv<Dtype>::SetMemory(Dtype* memory, int_tp count,
                              int_tp offset, Dtype value) {
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
     viennacl::ocl::kernel &kernel = ocl_program_.get_kernel("fill_memory");
     viennacl::ocl::context &ctx = viennacl::ocl::get_context(dev_ptr_->id());
 
@@ -2017,7 +2016,7 @@ void LibDNNConv<Dtype>::SetMemory(Dtype* memory, int_tp count,
     viennacl::ocl::enqueue(kernel(count, value,
                            WrapHandle((cl_mem)memory, &ctx), offset),
                            ctx.get_queue());
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
   } else {
 #ifdef USE_CUDA
     CUfunction kernel;

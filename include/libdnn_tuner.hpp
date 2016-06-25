@@ -1,5 +1,5 @@
-#ifndef CAFFE_GREENTEA_LIBDNN_TUNER_HPP_
-#define CAFFE_GREENTEA_LIBDNN_TUNER_HPP_
+#ifndef GREENTEA_LIBDNN_TUNER_HPP_
+#define GREENTEA_LIBDNN_TUNER_HPP_
 #include <functional>
 #include <map>
 #include <memory>
@@ -7,9 +7,9 @@
 #include <string>
 #include <type_traits>
 #include <vector>
-#include "caffe/common.hpp"
+#include "common.hpp"
 
-namespace caffe {
+namespace greentea {
 
 typedef enum {
     LIBDNN_TUNER_METHOD_ALL          = 0,
@@ -280,9 +280,9 @@ class LibDNNTuner {
   std::map<std::string, std::shared_ptr<LibDNNTunerParam>> param_map_;
 };
 
-}  // namespace caffe
+}  // namespace greentea
 
 
 
 
-#endif /* CAFFE_GREENTEA_LIBDNN_TUNER_HPP_ */
+#endif  // GREENTEA_TUNER_HPP_

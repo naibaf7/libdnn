@@ -3,13 +3,12 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "caffe/common.hpp"
-#ifdef USE_LIBDNN
-#include "caffe/device.hpp"
-#include "caffe/greentea/libdnn_tuner.hpp"
+#include "common.hpp"
+#include "device.hpp"
+#include "libdnn_tuner.hpp"
 
 
-namespace caffe {
+namespace libdnn {
 
 void LibDNNTuner::set_setup_routine(std::function<bool()> fun) {
   this->setup_routine_ = fun;
@@ -630,6 +629,4 @@ bool LibDNNTunerConstraintReal::evaluate() {
   return func_(values);
 }
 
-}  // namespace caffe
-
-#endif  // USE_LIBDNN
+}  // namespace libdnn

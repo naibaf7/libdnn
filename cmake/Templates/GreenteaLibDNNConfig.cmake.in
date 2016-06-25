@@ -1,0 +1,29 @@
+# Config file for the Greentea LibDNN package.
+#
+# After successful configuration the following variables
+# will be defined:
+#
+#   GREENTEA_INCLUDE_DIRS - Greentea include directories
+#   GREENTEA_LIBRARIES    - libraries to link against
+#   GREENTEA_DEFINITIONS  - a list of definitions to pass to compiler
+
+# Compute paths
+get_filename_component(GREENTEA_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(GREENTEA_INCLUDE_DIRS "@GREENTEA_INCLUDE_DIRS@")
+
+@GREENTEA_INSTALL_INCLUDE_DIR_APPEND_COMMAND@
+
+# Our library dependencies
+if(NOT TARGET greentea_libdnn AND NOT LIBDNN_BINARY_DIR)
+  include("${GREENTEA_CMAKE_DIR}/GreenteaLibDNNTargets.cmake")
+endif()
+
+# List of IMPORTED libs created by GreenteaLibDNNTargets.cmake
+set(GREENTEA_LIBRARIES greentea_libdnn)
+
+# Definitions
+set(GREENTEA_DEFINITIONS "@GREENTEA_DEFINITIONS@")
+
+# Cuda support variables
+set(GREENTEA_HAVE_CUDA @HAVE_CUDA@)
+set(GREENTEA_HAVE_OPENCL @HAVE_OPENCL@)
