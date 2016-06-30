@@ -12,5 +12,5 @@ set_target_properties(greentea_libdnn PROPERTIES
     )
 
 # ---[ Install
-install(DIRECTORY ${GREENEA_INCLUDE_DIR}/greentea DESTINATION include)
+install(DIRECTORY ${GREENTEA_INCLUDE_DIR} DESTINATION include/greentea)
 install(TARGETS greentea_libdnn EXPORT GreenteaLibDNNTargets DESTINATION lib)

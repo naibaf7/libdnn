@@ -82,7 +82,7 @@ function(generate_export_configs)
   configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in" "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake" @ONLY)
 
   # Install the GreenteaConfig.cmake and export set to use with install-tree
-  install(FILES "${PROJECT_BINARY_DIR}/cmake/GreenteaConfig.cmake" DESTINATION ${install_cmake_suffix})
+  install(FILES "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake" DESTINATION ${install_cmake_suffix})
   install(EXPORT GreenteaLibDNNTargets DESTINATION ${install_cmake_suffix})
 
   # ---[ Configure and install version file ]---
