@@ -1652,6 +1652,24 @@ nvrtcProgram LibDNNConv<Dtype>::CompileKernelsCuda() {
 }
 #endif  // USE_CUDA
 
+#ifdef USE_OPENCL
+viennacl::ocl::handle<cl_mem> WrapHandle(
+    cl_mem in, viennacl::ocl::context *ctx) {
+    if (in != NULL) {
+        viennacl::ocl::handle<cl_mem> memhandle(in, *ctx);
+        memhandle.inc();
+        return memhandle;
+    } else {
+        cl_int err;
+        cl_mem dummy = clCreateBuffer(
+            ctx->handle().get(),
+            CL_MEM_READ_WRITE, 0, NULL, &err);
+        viennacl::ocl::handle<cl_mem> memhandle(dummy, *ctx);
+        return memhandle;
+    }
+}
+#endif
+
 template<typename Dtype>
 void LibDNNConv<Dtype>::Forward(const Dtype* bottom_data,
                                  const Dtype* weight,
@@ -2032,6 +2050,7 @@ void LibDNNConv<Dtype>::SetMemory(Dtype* memory, int_tp count,
 #endif  // USE_CUDA
   }
 }
+
 
 template class LibDNNConv<float>;
 template class LibDNNConv<double>;
