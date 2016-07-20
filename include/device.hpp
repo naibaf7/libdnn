@@ -3,7 +3,16 @@
 
 #include <string>
 #include <vector>
+
 #include "common.hpp"
+
+#ifdef USE_OPENCL
+#include "viennacl/backend/opencl.hpp"
+#include "viennacl/ocl/backend.hpp"
+#include "viennacl/ocl/context.hpp"
+#include "viennacl/ocl/device.hpp"
+#include "viennacl/ocl/platform.hpp"
+#endif  // USE_OPENCL
 
 using std::vector;
 
@@ -21,7 +30,12 @@ class device {
 
 #ifdef USE_OPENCL
   bool is_host_unified();
-  static void setupViennaCLContext(int id, const &cl_context ctx, const &cl_device dev, const &cl_command_queue queue);
+  static void setupViennaCLContext(int id,
+                                   const cl_context& ctx,
+                                   const cl_device_id& dev,
+                                   const cl_command_queue& queue);
+
+  viennacl::ocl::program& program();
 #endif  // USE_OPENCL
 
   int num_queues();

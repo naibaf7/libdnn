@@ -59,17 +59,21 @@ function(generate_export_configs)
     set(HAVE_CUDA FALSE)
   endif()
 
-  configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in" "${PROJECT_BINARY_DIR}/GreenteaConfig.cmake" @ONLY)
+  configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in"
+           "${PROJECT_BINARY_DIR}/GreenteaLibDNNConfig.cmake" @ONLY)
 
   # Add targets to the build-tree export set
-  export(TARGETS greentea_libdnn FILE "${PROJECT_BINARY_DIR}/GreenteaLibDNNTargets.cmake")
+  export(TARGETS greentea_libdnn
+         FILE "${PROJECT_BINARY_DIR}/GreenteaLibDNNTargets.cmake")
   export(PACKAGE Greentea)
 
   # ---[ Configure install-tree GreenteaConfig.cmake file ]---
 
   # remove source and build dir includes
-  greentea_get_items_with_prefix(${PROJECT_SOURCE_DIR} GREENTEA_INCLUDE_DIRS __insource)
-  greentea_get_items_with_prefix(${PROJECT_BINARY_DIR} GREENTEA_INCLUDE_DIRS __inbinary)
+  greentea_get_items_with_prefix(
+      ${PROJECT_SOURCE_DIR} GREENTEA_INCLUDE_DIRS __insource)
+  greentea_get_items_with_prefix(
+      ${PROJECT_BINARY_DIR} GREENTEA_INCLUDE_DIRS __inbinary)
   list(REMOVE_ITEM GREENTEA_INCLUDE_DIRS ${__insource} ${__inbinary})
 
   # add `install` include folder
@@ -79,11 +83,15 @@ function(generate_export_configs)
      "unset(__greentea_include)\n")
   string(REPLACE ";" "" GREENTEA_INSTALL_INCLUDE_DIR_APPEND_COMMAND ${lines})
 
-  configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in" "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake" @ONLY)
+  configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in"
+     "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake" @ONLY)
 
   # Install the GreenteaConfig.cmake and export set to use with install-tree
-  install(FILES "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake" DESTINATION ${install_cmake_suffix})
-  install(EXPORT GreenteaLibDNNTargets DESTINATION ${install_cmake_suffix})
+  install(FILES "${PROJECT_BINARY_DIR}/cmake/GreenteaLibDNNConfig.cmake"
+          DESTINATION ${install_cmake_suffix})
+
+  install(EXPORT GreenteaLibDNNTargets
+          DESTINATION ${install_cmake_suffix})
 
   # ---[ Configure and install version file ]---
 

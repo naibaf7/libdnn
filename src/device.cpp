@@ -8,22 +8,35 @@
 namespace greentea {
 
 #ifdef USE_OPENCL
-void device::setupViennaCLContext(int id, const &cl_context ctx, const &cl_device dev, const &cl_command_queue queue) {
+void device::setupViennaCLContext(
+    int id, const cl_context& ctx,
+            const cl_device_id& dev,
+            const cl_command_queue& queue) {
   viennacl::ocl::setup_context(id, ctx, dev, queue);
 }
 #endif
 
 device::device()
-    : current_queue_id_(0), workgroup_sizes_(3, 0), id_(0), list_id_(0),
-      backend_(Backend::BACKEND_CPU), memory_usage_(0), peak_memory_usage_(0),
-      host_unified_(false) {
-}
+    : current_queue_id_(0)
+    , workgroup_sizes_(3, 0)
+    , id_(0)
+    , list_id_(0)
+    , backend_(Backend::BACKEND_CPU)
+    , memory_usage_(0)
+    , peak_memory_usage_(0)
+    , host_unified_(false) {}
 
-device::device(int id, int list_id, Backend backend)
-    : current_queue_id_(0), workgroup_sizes_(3, 0), id_(id), list_id_(list_id),
-      backend_(backend), memory_usage_(0), peak_memory_usage_(0),
-      host_unified_(false) {
-}
+device::device(int id,
+               int list_id,
+               Backend backend)
+    : current_queue_id_(0)
+    , workgroup_sizes_(3, 0)
+    , id_(id)
+    , list_id_(list_id)
+    , backend_(backend)
+    , memory_usage_(0)
+    , peak_memory_usage_(0)
+    , host_unified_(false) {}
 
 void device::Init() {
 #ifndef CPU_ONLY
@@ -71,6 +84,12 @@ int device::workgroup_size(int id) {
   return workgroup_sizes_[id % 3];
 }
 
+#ifdef USE_OPENCL
+viennacl::ocl::program& device::program() {
+  return ocl_program_;
+}
+#endif
+
 int device::num_queues() {
   if (backend_ == BACKEND_CUDA) {
 #ifdef USE_CUDA
@@ -78,12 +97,13 @@ int device::num_queues() {
 #endif  // USE_CUDA
   } else {
 #ifdef USE_OPENCL
-    return OPENCL_QUEUE_COUNT;
+    // TODO(naibaf7): where do you set this value?
+    // return OPENCL_QUEUE_COUNT;
+    return 1;
 #endif  // USE_OPENCL
   }
   return 1;
 }
-
 
 int device::current_queue_id() {
   return current_queue_id_;
@@ -191,16 +211,16 @@ bool device::is_host_unified() {
 
 const char* clGetErrorString(cl_int error) {
   switch (error) {
-  case 0: return "CL_SUCCESS";
-  case -1: return "CL_DEVICE_NOT_FOUND";
-  case -2: return "CL_DEVICE_NOT_AVAILABLE";
-  case -3: return "CL_COMPILER_NOT_AVAILABLE";
-  case -4: return "CL_MEM_OBJECT_ALLOCATION_FAILURE";
-  case -5: return "CL_OUT_OF_RESOURCES";
-  case -6: return "CL_OUT_OF_HOST_MEMORY";
-  case -7: return "CL_PROFILING_INFO_NOT_AVAILABLE";
-  case -8: return "CL_MEM_COPY_OVERLAP";
-  case -9: return "CL_IMAGE_FORMAT_MISMATCH";
+  case   0: return "CL_SUCCESS";
+  case  -1: return "CL_DEVICE_NOT_FOUND";
+  case  -2: return "CL_DEVICE_NOT_AVAILABLE";
+  case  -3: return "CL_COMPILER_NOT_AVAILABLE";
+  case  -4: return "CL_MEM_OBJECT_ALLOCATION_FAILURE";
+  case  -5: return "CL_OUT_OF_RESOURCES";
+  case  -6: return "CL_OUT_OF_HOST_MEMORY";
+  case  -7: return "CL_PROFILING_INFO_NOT_AVAILABLE";
+  case  -8: return "CL_MEM_COPY_OVERLAP";
+  case  -9: return "CL_IMAGE_FORMAT_MISMATCH";
   case -10: return "CL_IMAGE_FORMAT_NOT_SUPPORTED";
   case -11: return "CL_BUILD_PROGRAM_FAILURE";
   case -12: return "CL_MAP_FAILURE";
@@ -267,11 +287,11 @@ const char* clGetErrorString(cl_int error) {
   case -1018: return "clBLAS: Vector Y is not a valid memory object";
   case -1017: return "clBLAS: An input dimension (M:N:K) is invalid";
   case -1016: return "clBLAS: Leading dimension A must not be less than the "
-      "size of the first dimension";
+                     "size of the first dimension";
   case -1015: return "clBLAS: Leading dimension B must not be less than the "
-      "size of the second dimension";
+                     "size of the second dimension";
   case -1014: return "clBLAS: Leading dimension C must not be less than the "
-      "size of the third dimension";
+                     "size of the third dimension";
   case -1013: return "clBLAS: The increment for a vector X must not be 0";
   case -1012: return "clBLAS: The increment for a vector Y must not be 0";
   case -1011: return "clBLAS: The memory object for Matrix A is too small";
@@ -404,9 +424,6 @@ const char* clfftGetErrorString(clfftStatus status) {
 }
 #endif  // USE FFT
 
-
 #endif  // USE_OPENCL
-
-
 
 }  // namespace libnn
