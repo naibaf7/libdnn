@@ -7,7 +7,6 @@
 #include "device.hpp"
 #include "libdnn_tuner.hpp"
 
-
 namespace greentea {
 
 void LibDNNTuner::set_setup_routine(std::function<bool()> fun) {
