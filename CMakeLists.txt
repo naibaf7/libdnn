@@ -47,7 +47,8 @@ add_definitions(-DGTEST_USE_OWN_TR1_TUPLE)
 greentea_warnings_disable(CMAKE_CXX_FLAGS -Wno-sign-compare -Wno-uninitialized)
 
 # ---[ Config generation
-configure_file(cmake/Templates/greentea_libdnn_config.h.in "${PROJECT_BINARY_DIR}/greentea_libdnn_config.h")
+configure_file(cmake/Templates/greentea_libdnn_config.h.in
+        "${PROJECT_BINARY_DIR}/greentea_libdnn_config.h")
 
 # ---[ Includes
 set(GREENTEA_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)

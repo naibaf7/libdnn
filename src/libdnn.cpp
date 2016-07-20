@@ -1,10 +1,10 @@
 #include <string>
 #include <vector>
+
 #include "common.hpp"
 #include "device.hpp"
 #include "libdnn.hpp"
 #include "benchmark.hpp"
-
 
 namespace greentea {
 
@@ -1613,7 +1613,7 @@ viennacl::ocl::program LibDNNConv<Dtype>::CompileKernelsOpenCL(
     build_opts += "-cl-fast-relaxed-math -cl-mad-enable ";
   }
 
-  if (is_same<Dtype, float>::value) {
+  if (std::is_same<Dtype, float>::value) {
     build_opts += "-cl-single-precision-constant ";
   }
 

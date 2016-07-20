@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "device.hpp"
 #include "libdnn_tuner.hpp"
 

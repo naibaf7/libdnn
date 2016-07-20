@@ -5,7 +5,9 @@
 #include <type_traits>
 #include <sstream>
 #include <iomanip>
+
 #include "version.hpp"
+#include "greentea_libdnn_config.h"
 
 #ifndef GREENTEA_QUEUE_COUNT
 #define GREENTEA_QUEUE_COUNT 1
@@ -27,15 +29,11 @@
 
 namespace greentea {
 
-
-
-
 enum Backend {
   BACKEND_CPU,
   BACKEND_CUDA,
   BACKEND_OpenCL
 };
-
 
 }
 
