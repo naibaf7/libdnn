@@ -14,6 +14,11 @@
 #include "viennacl/ocl/platform.hpp"
 #endif  // USE_OPENCL
 
+#ifdef USE_CUDA
+#include "cuda.h"
+#include "nvrtc.h"
+#endif  // USE_CUDA
+
 using std::vector;
 
 namespace greentea {

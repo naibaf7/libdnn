@@ -13,6 +13,10 @@
 #define GREENTEA_QUEUE_COUNT 1
 #endif
 
+#ifndef CUDA_NUM_THREADS
+#define CUDA_NUM_THREADS 1
+#endif
+
 #ifdef USE_OPENCL
 #ifndef VIENNACL_WITH_OPENCL
 #define VIENNACL_WITH_OPENCL

@@ -60,7 +60,7 @@ function(generate_export_configs)
   endif()
 
   configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in"
-           "${PROJECT_BINARY_DIR}/GreenteaLibDNNConfig.cmake" @ONLY)
+           "${PROJECT_BINARY_DIR}/GreenteaConfig.cmake" @ONLY)
 
   # Add targets to the build-tree export set
   export(TARGETS greentea_libdnn
