@@ -13,7 +13,7 @@
 /* 64 bit indexing */
 #cmakedefine USE_INDEX_64
 
-/* NVIDA Cuda */
+/* NVIDIA Cuda */
 #cmakedefine HAVE_CUDA
 #cmakedefine USE_CUDA
 
