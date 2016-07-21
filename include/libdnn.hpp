@@ -17,6 +17,7 @@
 #endif  // USE_OPENCL
 
 #ifdef USE_CUDA
+#include <cuda_runtime_api.h>
 #include "cuda.h"
 #include "nvrtc.h"
 #endif  // USE_CUDA

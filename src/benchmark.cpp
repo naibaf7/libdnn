@@ -1,27 +1,28 @@
+#include "benchmark.hpp"
 #include "common.hpp"
 #include "device.hpp"
-#include "benchmark.hpp"
 
 namespace greentea {
 
 Timer::Timer(device* dev_ptr)
-    : dev_ptr_(dev_ptr), initted_(false), running_(false), has_run_at_least_once_(false) {
-  Init();
-}
+    : dev_ptr_(dev_ptr)
+    , initted_(false)
+    , running_(false)
+    , has_run_at_least_once_(false) { Init(); }
 
 Timer::~Timer() {
 #ifdef USE_CUDA
     if (dev_ptr_->backend() == BACKEND_CUDA) {
-      CUDA_CHECK(cudaEventDestroy(start_gpu_cuda_));
-      CUDA_CHECK(cudaEventDestroy(stop_gpu_cuda_));
+        CUDA_CHECK(cudaEventDestroy(start_gpu_cuda_));
+        CUDA_CHECK(cudaEventDestroy(stop_gpu_cuda_));
     }
 #endif  // USE_CUDA
 #ifdef USE_OPENCL
     if (dev_ptr_->backend() == BACKEND_OpenCL) {
-      clWaitForEvents(1, &start_gpu_cl_);
-      clWaitForEvents(1, &stop_gpu_cl_);
-      clReleaseEvent(start_gpu_cl_);
-      clReleaseEvent(stop_gpu_cl_);
+        clWaitForEvents(1, &start_gpu_cl_);
+        clWaitForEvents(1, &stop_gpu_cl_);
+        clReleaseEvent(start_gpu_cl_);
+        clReleaseEvent(stop_gpu_cl_);
     }
 #endif  // USE_OPENCL
 }
@@ -41,6 +42,9 @@ void Timer::Start() {
             dev_ptr_->id());
         viennacl::ocl::program &program = dev_ptr_->program();
         viennacl::ocl::kernel &kernel = program.get_kernel("null_kernel_float");
+        // TODO(naibaf7): compiler shows deprecated declaration
+        // use `clEnqueueNDRangeKernel` instead
+        // https://www.khronos.org/registry/cl/sdk/1.0/docs/man/xhtml/clEnqueueTask.html
         clEnqueueTask(ctx.get_queue().handle().get(), kernel.handle().get(), 0,
                         NULL, &start_gpu_cl_);
         clFinish(ctx.get_queue().handle().get());
@@ -77,12 +81,12 @@ void Timer::Stop() {
 }
 
 float Timer::MicroSeconds() {
-  if (!has_run_at_least_once()) {
-    return 0;
-  }
-  if (running()) {
-    Stop();
-  }
+    if (!has_run_at_least_once()) {
+        return 0;
+    }
+    if (running()) {
+        Stop();
+    }
 #ifdef USE_CUDA
     if (dev_ptr_->backend() == BACKEND_CUDA) {
       CUDA_CHECK(cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_cuda_,

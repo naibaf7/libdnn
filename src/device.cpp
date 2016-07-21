@@ -4,7 +4,6 @@
 
 #include "device.hpp"
 
-
 namespace greentea {
 
 #ifdef USE_OPENCL
@@ -109,7 +108,7 @@ int device::current_queue_id() {
   return current_queue_id_;
 }
 
-void device::SwitchQueue(int id) {
+void device::SwitchQueue(const int id) {
   if (backend_ == BACKEND_CUDA) {
 #ifdef USE_CUDA
     (void) id;
