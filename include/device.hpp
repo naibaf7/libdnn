@@ -6,18 +6,6 @@
 
 #include "common.hpp"
 
-#ifdef USE_OPENCL
-#include "viennacl/backend/opencl.hpp"
-#include "viennacl/ocl/backend.hpp"
-#include "viennacl/ocl/context.hpp"
-#include "viennacl/ocl/device.hpp"
-#include "viennacl/ocl/platform.hpp"
-#endif  // USE_OPENCL
-
-#ifdef USE_CUDA
-#include "cuda.h"
-#include "nvrtc.h"
-#endif  // USE_CUDA
 
 using std::vector;
 

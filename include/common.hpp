@@ -6,8 +6,23 @@
 #include <sstream>
 #include <iomanip>
 
-#include "version.hpp"
 #include "greentea_libdnn_config.h"
+
+#ifdef USE_OPENCL
+#include "viennacl/backend/opencl.hpp"
+#include "viennacl/ocl/backend.hpp"
+#include "viennacl/ocl/context.hpp"
+#include "viennacl/ocl/device.hpp"
+#include "viennacl/ocl/platform.hpp"
+#endif  // USE_OPENCL
+
+#ifdef USE_CUDA
+#include "cuda.h"
+#include "nvrtc.h"
+#include <cuda_runtime.h>
+#include <curand.h>
+#include <driver_types.h>
+#endif  // USE_CUDA
 
 #ifndef GREENTEA_QUEUE_COUNT
 #define GREENTEA_QUEUE_COUNT 1

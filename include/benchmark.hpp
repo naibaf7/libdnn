@@ -2,7 +2,7 @@
 #define GREENTEA_BENCHMARK_HPP_
 
 #include <chrono>
-
+#include "common.hpp"
 #include "device.hpp"
 
 namespace greentea {

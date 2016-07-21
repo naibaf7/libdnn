@@ -59,9 +59,6 @@ function(generate_export_configs)
     set(HAVE_CUDA FALSE)
   endif()
 
-  configure_file("cmake/Templates/GreenteaLibDNNConfig.cmake.in"
-           "${PROJECT_BINARY_DIR}/GreenteaConfig.cmake" @ONLY)
-
   # Add targets to the build-tree export set
   export(TARGETS greentea_libdnn
          FILE "${PROJECT_BINARY_DIR}/GreenteaLibDNNTargets.cmake")
@@ -93,13 +90,6 @@ function(generate_export_configs)
   install(EXPORT GreenteaLibDNNTargets
           DESTINATION ${install_cmake_suffix})
 
-  # ---[ Configure and install version file ]---
-
-  # TODO: Lines below are commented because Greentea does't declare its version in headers.
-  # When the declarations are added, modify `greentea_extract_greentea_version()` macro and uncomment
-
-  # configure_file(cmake/Templates/GreenteaConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/GreenteaConfigVersion.cmake" @ONLY)
-  # install(FILES "${PROJECT_BINARY_DIR}/GreenteaConfigVersion.cmake" DESTINATION ${install_cmake_suffix})
 endfunction()
 
 

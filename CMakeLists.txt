@@ -9,6 +9,9 @@ endif()
 # ---[ Greentea project
 project(Greentea-LibDNN C CXX)
 
+set(GREENTEA_TARGET_VERSION "0.1.0" CACHE STRING "Greentea logical version")
+set(GREENTEA_TARGET_SOVERSION "0.1.0" CACHE STRING "Greentea soname version")
+
 # ---[ Using cmake scripts and modules
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 

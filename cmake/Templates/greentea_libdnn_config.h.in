@@ -1,6 +1,9 @@
 #ifndef GREENTEA_LIBDNN_CONFIG_HPP_
 #define GREENTEA_LIBDNN_CONFIG_HPP_
 
+/* Version */
+#define GREENTEA_VERSION "${GREENTEA_TARGET_VERSION}"
+
 /* Sources directory */
 #define SOURCE_FOLDER "${PROJECT_SOURCE_DIR}"
 

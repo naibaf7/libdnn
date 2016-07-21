@@ -13,8 +13,8 @@ Timer::Timer(device* dev_ptr)
 Timer::~Timer() {
 #ifdef USE_CUDA
     if (dev_ptr_->backend() == BACKEND_CUDA) {
-        CUDA_CHECK(cudaEventDestroy(start_gpu_cuda_));
-        CUDA_CHECK(cudaEventDestroy(stop_gpu_cuda_));
+        (cudaEventDestroy(start_gpu_cuda_));
+        (cudaEventDestroy(stop_gpu_cuda_));
     }
 #endif  // USE_CUDA
 #ifdef USE_OPENCL
@@ -31,7 +31,7 @@ void Timer::Start() {
   if (!running()) {
 #ifdef USE_CUDA
       if (dev_ptr_->backend() == BACKEND_CUDA) {
-        CUDA_CHECK(cudaEventRecord(start_gpu_cuda_, 0));
+        (cudaEventRecord(start_gpu_cuda_, 0));
       }
 #endif  // USE_CUDA
 #ifdef USE_OPENCL
@@ -59,8 +59,8 @@ void Timer::Stop() {
   if (running()) {
 #ifdef USE_CUDA
       if (dev_ptr_->backend() == BACKEND_CUDA) {
-        CUDA_CHECK(cudaEventRecord(stop_gpu_cuda_, 0));
-        CUDA_CHECK(cudaEventSynchronize(stop_gpu_cuda_));
+        (cudaEventRecord(stop_gpu_cuda_, 0));
+        (cudaEventSynchronize(stop_gpu_cuda_));
       }
 #endif  // USE_CUDA
 #ifdef USE_OPENCL
@@ -89,7 +89,7 @@ float Timer::MicroSeconds() {
     }
 #ifdef USE_CUDA
     if (dev_ptr_->backend() == BACKEND_CUDA) {
-      CUDA_CHECK(cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_cuda_,
+      (cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_cuda_,
               stop_gpu_cuda_));
       // Cuda only measure milliseconds
       elapsed_microseconds_ = elapsed_milliseconds_ * 1000;
@@ -119,7 +119,7 @@ float Timer::MilliSeconds() {
   }
 #ifdef USE_CUDA
     if (dev_ptr_->backend() == BACKEND_CUDA) {
-      CUDA_CHECK(cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_cuda_,
+      (cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_cuda_,
               stop_gpu_cuda_));
     }
 #endif  // USE_CUDA
@@ -145,8 +145,8 @@ void Timer::Init() {
   if (!initted()) {
 #ifdef USE_CUDA
       if (dev_ptr_->backend() == BACKEND_CUDA) {
-        CUDA_CHECK(cudaEventCreate(&start_gpu_cuda_));
-        CUDA_CHECK(cudaEventCreate(&stop_gpu_cuda_));
+        (cudaEventCreate(&start_gpu_cuda_));
+        (cudaEventCreate(&stop_gpu_cuda_));
       }
 #endif  // USE_CUDA
 #ifdef USE_OPENCL
