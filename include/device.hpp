@@ -24,9 +24,9 @@ class device {
 #ifdef USE_OPENCL
   bool is_host_unified();
   static void setupViennaCLContext(int id,
-                                   const cl_context& ctx,
-                                   const cl_device_id& dev,
-                                   const cl_command_queue& queue);
+                                   const cl_context ctx,
+                                   const cl_device_id dev,
+                                   const cl_command_queue queue);
 
   viennacl::ocl::program& program();
 #endif  // USE_OPENCL

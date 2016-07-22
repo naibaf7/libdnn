@@ -8,9 +8,9 @@ namespace greentea {
 
 #ifdef USE_OPENCL
 void device::setupViennaCLContext(
-    int id, const cl_context& ctx,
-            const cl_device_id& dev,
-            const cl_command_queue& queue) {
+    int id, cl_context ctx,
+            cl_device_id dev,
+            cl_command_queue queue) {
   viennacl::ocl::setup_context(id, ctx, dev, queue);
 }
 #endif
