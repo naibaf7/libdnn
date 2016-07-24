@@ -1,9 +1,12 @@
+if(FALSE)
 # ---[ Configuration types
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Possible configurations" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release"
+    CACHE STRING "Possible configurations" FORCE)
 mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
 
 if(DEFINED CMAKE_BUILD_TYPE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${CMAKE_CONFIGURATION_TYPES})
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+               STRINGS ${CMAKE_CONFIGURATION_TYPES})
 endif()
 
 # --[ If user doesn't specify build type then assume release
@@ -25,8 +28,11 @@ endif()
 
 # ---[ Install options
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install" CACHE PATH "Default install path" FORCE)
+  set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install"
+      CACHE PATH "Default install path" FORCE)
 endif()
+
+if(FALSE)
 
 # ---[ RPATH settings
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE CACHE BOOLEAN "Use link paths for shared library rpath")
@@ -50,3 +56,6 @@ set(GREENTEA_POSTFIX "")
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
   set(GREENTEA_POSTFIX ${GREENTEA_DEBUG_POSTFIX})
 endif()
+
+endif(FALSE)
+endif(FALSE)

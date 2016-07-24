@@ -94,5 +94,3 @@ function(generate_export_configs)
           DESTINATION ${install_cmake_suffix})
 
 endfunction()
-
-
