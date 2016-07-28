@@ -1654,19 +1654,19 @@ nvrtcProgram LibDNNConv<Dtype>::CompileKernelsCuda() {
 
 #ifdef USE_OPENCL
 viennacl::ocl::handle<cl_mem> WrapHandle(
-    cl_mem in, viennacl::ocl::context *ctx) {
-    if (in != NULL) {
-        viennacl::ocl::handle<cl_mem> memhandle(in, *ctx);
-        memhandle.inc();
-        return memhandle;
-    } else {
-        cl_int err;
-        cl_mem dummy = clCreateBuffer(
-            ctx->handle().get(),
-            CL_MEM_READ_WRITE, 0, NULL, &err);
-        viennacl::ocl::handle<cl_mem> memhandle(dummy, *ctx);
-        return memhandle;
-    }
+  cl_mem in, viennacl::ocl::context *ctx) {
+  if (in != NULL) {
+      viennacl::ocl::handle<cl_mem> memhandle(in, *ctx);
+      memhandle.inc();
+      return memhandle;
+  } else {
+      cl_int err;
+      cl_mem dummy = clCreateBuffer(
+          ctx->handle().get(),
+          CL_MEM_READ_WRITE, 0, NULL, &err);
+      viennacl::ocl::handle<cl_mem> memhandle(dummy, *ctx);
+      return memhandle;
+  }
 }
 #endif
 

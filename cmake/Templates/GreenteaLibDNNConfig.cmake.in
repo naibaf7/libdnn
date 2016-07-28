@@ -17,15 +17,6 @@ if(NOT TARGET @PROJECT_LIBRARY_TARGET_NAME@)
     include("${CMAKE_CURRENT_LIST_DIR}/@CMAKE_TARGETS_FILE@")
 endif()
 
-# TODO(edgarriba/naibaf/): check how to include `greentea_libdnn`
-# target itself in `GREENTEA_LIBRARIES` since I got an error when
-# the package is imported from an external project.
-
-# TODO(naibaf7): Are we okay with this vars names? I was considering
-# to use sth like `GreenteaLibDNN_*`. Whatever make the thing more
-# clear will be okay.
-
-set_and_check(GREENTEA_LIBRARIES    "@GREENTEA_LINKER_LIBS@")
 set_and_check(GREENTEA_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR@")
 set_and_check(GREENTEA_LIBRARY_DIR  "@PACKAGE_LIB_INSTALL_DIR@")
 

@@ -96,8 +96,6 @@ int device::num_queues() {
 #endif  // USE_CUDA
   } else {
 #ifdef USE_OPENCL
-    // TODO(naibaf7): where do you set this value?
-    // return OPENCL_QUEUE_COUNT;
     return 1;
 #endif  // USE_OPENCL
   }
