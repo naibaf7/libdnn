@@ -8,6 +8,9 @@
 
 #include "greentea_libdnn_config.h"
 
+// #define LIBDNN_DEBUG 1
+// #define VIENNACL_DEBUG_ALL 1
+
 #ifdef USE_OPENCL
 #include "viennacl/backend/opencl.hpp"
 #include "viennacl/ocl/backend.hpp"

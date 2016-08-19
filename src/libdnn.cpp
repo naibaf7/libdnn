@@ -1589,16 +1589,24 @@ void LibDNNConv<Dtype>::GenerateKernels() {
 
 template<typename Dtype>
 bool LibDNNConv<Dtype>::CompileKernels() {
+  std::string code_ext = "";
 #ifdef USE_OPENCL
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
     CompileKernelsOpenCL(&(viennacl::ocl::get_context(dev_ptr_->id())));
+    code_ext = ".cl";
   }
 #endif  // USE_GREETEA
 #ifdef USE_CUDA
   if (dev_ptr_->backend() == BACKEND_CUDA) {
     CompileKernelsCuda();
+    code_ext = ".cu";
   }
 #endif  // USE_CUDA
+#ifdef LIBDNN_DEBUG
+  FILE* fp = fopen(("libdnn_conv" + code_ext).c_str(), "wb");
+  fwrite(kernel_.c_str(), sizeof(char), kernel_.length(), fp);
+  fclose(fp);
+#endif  // LIBDNN_DEBUG
   return true;
 }
 
@@ -1622,6 +1630,18 @@ viennacl::ocl::program LibDNNConv<Dtype>::CompileKernelsOpenCL(
   // std::cout << kernel_ << std::endl;
 
   ocl_program_ = ctx->add_program(kernel_.c_str(), "kernel_program");
+
+#ifdef LIBDNN_DEBUG
+  size_t bin_sz;
+  clGetProgramInfo(ocl_program_.handle().get(), CL_PROGRAM_BINARY_SIZES, sizeof(size_t), &bin_sz, NULL);
+  unsigned char *bin = (unsigned char *)malloc(bin_sz);  // NOLINT
+  clGetProgramInfo(ocl_program_.handle().get(), CL_PROGRAM_BINARIES, sizeof(unsigned char *), &bin, NULL);
+  FILE* fp = fopen("libdnn_conv_opencl.ptx", "wb");
+  fwrite(bin, sizeof(char), bin_sz, fp);
+  fclose(fp);
+  free(bin);  // NOLINT
+#endif
+
   return ocl_program_;
 }
 #endif  // USE_OPENCL
@@ -1639,15 +1659,21 @@ nvrtcProgram LibDNNConv<Dtype>::CompileKernelsCuda() {
 
   cuModuleLoadDataEx(&cuda_module_, ptx, 0, 0, 0);
 
-  /*
-  size_t log_size;
-  nvrtcGetProgramLogSize(cuda_program_, &log_size);
-  std::vector<char> log(log_size);
-  nvrtcGetProgramLog(cuda_program_, log.data());
+#ifdef LIBDNN_DEBUG
+   size_t log_size;
+   nvrtcGetProgramLogSize(cuda_program_, &log_size);
+   std::vector<char> log(log_size);
+   nvrtcGetProgramLog(cuda_program_, log.data());
 
-  std::cout << "CUDA compile log:" << std::endl;
-  std::cout << log.data() << std::endl;
-  */
+   std::cout << "CUDA compile log:" << std::endl;
+   std::cout << log.data() << std::endl;
+
+   FILE* fp = fopen("libdnn_conv_cuda.ptx", "wb");
+   fwrite(ptx, sizeof(char), ptxSize, fp);
+   fclose(fp);
+   free(ptx);
+#endif
+
   return cuda_program_;
 }
 #endif  // USE_CUDA
