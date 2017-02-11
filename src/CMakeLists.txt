@@ -35,4 +35,6 @@ install(FILES ${hdrs} "${CMAKE_BINARY_DIR}/greentea_libdnn_config.h"
 
 install(TARGETS ${PROJECT_LIBRARY_TARGET_NAME}
         EXPORT  ${CMAKE_TARGETS_NAME}
+        RUNTIME DESTINATION lib
+        ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib)
