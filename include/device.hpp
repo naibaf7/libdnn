@@ -22,13 +22,14 @@ class device {
   int workgroup_size(int id);
 
 #ifdef USE_OPENCL
-  bool is_host_unified();
   static void setupViennaCLContext(int id,
                                    const cl_context ctx,
                                    const cl_device_id dev,
                                    const cl_command_queue queue);
 
   viennacl::ocl::program& program();
+  void SetProgram();
+  bool is_host_unified();
 #endif  // USE_OPENCL
 
   int num_queues();
@@ -39,11 +40,13 @@ class device {
 
   uint_tp memory_usage();
   uint_tp peak_memory_usage();
+  std::string name();
   void IncreaseMemoryUsage(uint_tp bytes);
   void DecreaseMemoryUsage(uint_tp bytes);
   void ResetPeakMemoryUsage();
   bool CheckCapability(std::string cap);
   bool CheckVendor(std::string vendor);
+  bool CheckType(std::string type);
 
  private:
   int current_queue_id_;
@@ -54,6 +57,7 @@ class device {
   uint_tp memory_usage_;
   uint_tp peak_memory_usage_;
   bool host_unified_;
+  std::string name_;
 #ifdef USE_OPENCL
   viennacl::ocl::program ocl_program_;
 #endif  // USE_OPENCL

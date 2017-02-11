@@ -23,7 +23,8 @@ device::device()
     , backend_(Backend::BACKEND_CPU)
     , memory_usage_(0)
     , peak_memory_usage_(0)
-    , host_unified_(false) {}
+    , host_unified_(false)
+    , name_(""){}
 
 device::device(int id,
                int list_id,
@@ -35,7 +36,8 @@ device::device(int id,
     , backend_(backend)
     , memory_usage_(0)
     , peak_memory_usage_(0)
-    , host_unified_(false) {}
+    , host_unified_(false)
+    , name_(""){}
 
 void device::Init() {
 #ifndef CPU_ONLY
@@ -143,6 +145,40 @@ uint_tp device::memory_usage() {
 
 uint_tp device::peak_memory_usage() {
   return peak_memory_usage_;
+}
+
+std::string device::name() {
+  if (name_ == "") {
+    if (backend_ == BACKEND_OpenCL) {
+#ifdef USE_OPENCL
+      viennacl::ocl::context &ctx = viennacl::ocl::get_context(id_);
+
+      size_t size;
+      size_t max_size = 1024 * 1024;
+      clGetDeviceInfo(ctx.devices()[0].id(), CL_DEVICE_NAME,
+                      0, NULL, &size);
+
+      // Cap at 1 MB to capture faulty OpenCL implementations (nVidia)
+      std::vector<char> exts(std::min(size, max_size));
+
+      clGetDeviceInfo(ctx.devices()[0].id(), CL_DEVICE_NAME,
+                      std::min(size, max_size), &(exts[0]), NULL);
+
+      std::string extsstr(&(exts[0]));
+      std::replace(extsstr.begin(), extsstr.end(), ' ', '_');
+      name_ = extsstr;
+#endif  // USE_OPENCL
+    } else {
+#ifdef USE_CUDA
+      cudaDeviceProp prop;
+      cudaGetDeviceProperties(&prop, id_);
+      std::string extsstr(&prop.name[0]);
+      std::replace(extsstr.begin(), extsstr.end(), ' ', '_');
+      name_ = extsstr;
+#endif  // USE_CUDA
+    }
+  }
+  return name_;
 }
 
 void device::IncreaseMemoryUsage(uint_tp bytes) {
