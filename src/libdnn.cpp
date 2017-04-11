@@ -225,11 +225,11 @@ bool LibDNN<Dtype>::CompileKernels() {
   fclose(fp);
 #endif  // LIBDNN_DEBUG
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
     CompileKernelsOpenCL(&(viennacl::ocl::get_context(dev_ptr_->id())));
   }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 #ifdef USE_CUDA
   if (dev_ptr_->backend() == BACKEND_CUDA) {
     CompileKernelsCuda();
@@ -238,7 +238,7 @@ bool LibDNN<Dtype>::CompileKernels() {
   return true;
 }
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
 template<typename Dtype>
 viennacl::ocl::program LibDNN<Dtype>::CompileKernelsOpenCL(
     viennacl::ocl::context *ctx) {
@@ -273,7 +273,7 @@ viennacl::ocl::program LibDNN<Dtype>::CompileKernelsOpenCL(
 
   return ocl_program_;
 }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
 template<typename Dtype>
@@ -327,12 +327,12 @@ nvrtcProgram LibDNN<Dtype>::CompileKernelsCuda() {
 template<typename Dtype>
 void LibDNN<Dtype>::AllocateMemory(void** ptr, uint_tp size, int_tp flags) {
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   viennacl::ocl::context &ctx = viennacl::ocl::get_context(dev_ptr_->id());
   *ptr = (void*)clCreateBuffer(ctx.handle().get(),    // NOLINT
                                flags,
                                size, nullptr, nullptr);
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
   } else {
 #ifdef USE_CUDA
     cudaMalloc(ptr, size);
@@ -344,7 +344,7 @@ template<typename Dtype>
 void LibDNN<Dtype>::SetMemory(Dtype* memory, int_tp count, int_tp offset,
                               Dtype value) {
   if (dev_ptr_->backend() == BACKEND_OpenCL) {
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
     viennacl::ocl::kernel &kernel = ocl_program_.get_kernel("fill_memory");
     viennacl::ocl::context &ctx = viennacl::ocl::get_context(dev_ptr_->id());
 
@@ -361,7 +361,7 @@ void LibDNN<Dtype>::SetMemory(Dtype* memory, int_tp count, int_tp offset,
     viennacl::ocl::enqueue(
         kernel(count, value, WrapHandle((cl_mem) memory, &ctx), offset),
         ctx.get_queue());
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
   } else {
 #ifdef USE_CUDA
     CUfunction kernel;

@@ -106,9 +106,9 @@ class LibDNN {
   bool CompileKernels();
   void AllocateMemory(void** ptr, uint_tp size, int_tp flags);
   void SetMemory(Dtype* memory, int_tp count, int_tp offset, Dtype value);
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   viennacl::ocl::program CompileKernelsOpenCL(viennacl::ocl::context *ctx);
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 #ifdef USE_CUDA
   nvrtcProgram CompileKernelsCuda();
 #endif  // USE_CUDA
@@ -138,9 +138,9 @@ class LibDNN {
 
   device* dev_ptr_;
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   viennacl::ocl::program ocl_program_;
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   nvrtcProgram cuda_program_;
