@@ -51,10 +51,25 @@
 
 namespace greentea {
 
+#ifdef USE_OPENCL
+viennacl::ocl::handle<cl_mem> WrapHandle(cl_mem in,
+                                         viennacl::ocl::context *ctx);
+#endif
+
 enum Backend {
   BACKEND_CPU,
   BACKEND_CUDA,
   BACKEND_OpenCL
+};
+
+template<typename T, typename U>
+struct is_same {
+  static const bool value = false;
+};
+
+template<typename T>
+struct is_same<T, T> {
+  static const bool value = true;
 };
 
 }

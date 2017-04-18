@@ -806,7 +806,7 @@ void LibDNNPool<Dtype>::Forward(const Dtype* bottom_data,
   int_tp lw0 = fw_tuner_->get_param<int_tp>("LW0");
   int_tp lw1 = fw_tuner_->get_param<int_tp>("LW1");
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (LibDNN<Dtype>::dev_ptr_->backend() == BACKEND_OpenCL) {
     viennacl::ocl::kernel &kernel =
         LibDNN<Dtype>::ocl_program_.get_kernel(
@@ -861,7 +861,7 @@ void LibDNNPool<Dtype>::Forward(const Dtype* bottom_data,
         break;
     }
   }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   if (LibDNN<Dtype>::dev_ptr_->backend() == BACKEND_CUDA) {
@@ -952,7 +952,7 @@ void LibDNNPool<Dtype>::Backward(const Dtype* top_diff,
   int_tp lw0 = bw_tuner_->get_param<int_tp>("LW0");
   int_tp lw1 = bw_tuner_->get_param<int_tp>("LW1");
 
-#ifdef USE_GREENTEA
+#ifdef USE_OPENCL
   if (LibDNN<Dtype>::dev_ptr_->backend() == BACKEND_OpenCL) {
     viennacl::ocl::kernel &kernel =
         LibDNN<Dtype>::ocl_program_.get_kernel("pool_backward");
@@ -1006,7 +1006,7 @@ void LibDNNPool<Dtype>::Backward(const Dtype* top_diff,
         break;
     }
   }
-#endif  // USE_GREENTEA
+#endif  // USE_OPENCL
 
 #ifdef USE_CUDA
   if (LibDNN<Dtype>::dev_ptr_->backend() == BACKEND_CUDA) {
