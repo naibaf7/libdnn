@@ -12,6 +12,7 @@
 // #define VIENNACL_DEBUG_ALL 1
 
 #ifdef USE_OPENCL
+#define VIENNACL_PROFILING_ENABLED
 #include "viennacl/backend/opencl.hpp"
 #include "viennacl/ocl/backend.hpp"
 #include "viennacl/ocl/context.hpp"
