@@ -1,0 +1,122 @@
+************************************************
+****           ViennaCL Readme              ****
+************************************************
+
+Table of Contents
+------------------
+1. Requirements
+2. Installation
+3. Project Layout
+4. Authors and Contact
+A. License
+
+
+
+1. Requirements
+-----------------
+ViennaCL requires the following:
+ * A recent C++ compiler (e.g. gcc 4.x.x)
+ * For accessing GPUs and multi-core CPUs: OpenCL (shared library and include files) or CUDA if only targeting NVIDIA GPUs
+ * For building some of the tutorials: Armadillo, Eigen, MTL4, or uBLAS (shipped with the Boost libraries).
+
+
+2. Installation
+-----------------
+
+The first step is to extract the file:
+
+Unix-based OS:
+$> gunzip ViennaCL-1.7.1.tar.gz
+$> tar -xf ViennaCL-1.7.1.tar
+$> cd ViennaCL-1.7.1
+
+Windows:
+Extract the file using your favorite compressor/decompressor, e.g. 7-zip.
+
+ViennaCL is a header-only library, therefore it is sufficient to copy the subfolder viennacl/ (holding the header files) into you project directory or your system include directory. For instructions on how to set the include paths correctly, please refer to the documentation of your compiler.
+
+Manual builds of the examples are possible and described in the manual.
+In the following we describe the use of CMake:
+
+Unix-based clients:
+ * change to the build directory:
+   $> cd build
+
+ * call cmake
+   $> cmake ..
+
+ * If CMake cannot find the OpenCL files, e.g. 'Could NOT find OPENCL (missing:  OPENCL_INCLUDE_DIR)', please set the paths manually, e.g.
+   $> cmake .. -DOPENCL_INCLUDE_DIR=../CL
+   Or, use the CMake GUI.
+   $> cmake-gui
+   Or, disable openCL if you are not planning to use parallel programming components
+   $> cmake .. -DENABLE_OPENCL=0
+
+ * Use 'make' to build all examples:
+   $> make
+   (alternatively, you can build them individually via 'make blas1', 'make viennacl-info', etc.
+
+ * Start the tutorials (optional)
+   $> examples/blas1
+   $> examples/custom-kernels
+   $> examples/viennacl-info
+   (...)
+
+Windows:
+ * Open the CMake GUI
+ * Set the source code location ('Where is the source code:') to the extracted ViennaCL-1.x.x folder
+ * Set the build folder ('Where to build the binaries:') to the subfolder build/ in the ViennaCL-1.x.x folder.
+ * Click on 'Configure' and select your Compiler
+ * Click on 'Configure' again
+ * Click on 'Generate'
+ * Navigate to the build/ folder, open the generated project files with your favorite IDE, and build them.
+
+3. Project Layout
+-----------------
+
+---- ViennaCL-1.X.X
+   |
+   |-- auxiliary/ - (only in src-Edition) Auxiliary files (i.e. the OpenCL source code tree and the converter for the header files)
+   |
+   |-- build/ - Build directory for building the examples
+   |
+   |-- CL/ - The OpenCL headers
+   |
+   |-- cmake/ - Additional CMake configuration files
+   |
+   |-- doc/ - Documentation (LaTeX and doxygen)
+   |
+   |-- examples/ - Tutorial and benchmarking applications
+        |
+        |-- testdata/ - Test data for the tutorials and benchmarks
+        |
+        |-- benchmarks/ - A small benchmarking suite
+        |
+        |-- tutorial/ - Some tutorials explaining the usage of ViennaCL
+        |
+        |-- parameters/ - Parameter optimization environment
+   |
+   |-- external/ - External libraries
+   |
+   |-- libviennacl/ - Shared library for interfacing some BLAS functionality of ViennaCL from languages other than C++
+   |
+   |-- tests/ - Automated test suite using CTest
+   |
+   |-- viennacl/ - The library source code
+
+
+4. Contact
+------------------------
+
+For any technical questions related to ViennaCL, please use our support mailing list: viennacl-support@lists.sourceforge.net (https://lists.sourceforge.net/lists/listinfo/viennacl-support)
+The developer mailinglist is viennacl-devel@lists.sourceforge.net, for which you can subscribe at https://lists.sourceforge.net/lists/listinfo/viennacl-devel
+You may also use the forum provided by sourceforge.net: http://sourceforge.net/projects/viennacl/
+For any other issues, please contact the project head Karl Rupp at rupp@iue.tuwien.ac.at.
+
+ViennaCL was developed under the aegis of the 'Institute for Microelectronics' at the 'Vienna University of Technology'.
+
+
+A. License
+------------
+ViennaCL is distributed under the MIT (X11) License. See file LICENSE.
+
